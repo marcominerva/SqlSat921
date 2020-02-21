@@ -101,7 +101,7 @@ namespace SqlSat921
                     }
                 }
 
-                Console.WriteLine(Environment.NewLine);
+                Console.WriteLine("\n");
             }
         }
     }

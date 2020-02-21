@@ -13,6 +13,8 @@ namespace SqlSat921
         {
             await SimpleMappingAsync(connectionString);
 
+            //await ListMappingAsync(connectionString);
+
             //await AliasMappingAsync(connectionString);
         }
 
@@ -32,6 +34,34 @@ namespace SqlSat921
                 }, splitOn: "Street"); // A comma-separated string that tells Dapper when the returned columns must be mapped to the next object.
 
             Print(restaurants);
+        }
+
+        private static async Task ListMappingAsync(string connectionString)
+        {
+            using var connection = new SqlConnection(connectionString);
+
+            var restaurantsDictionary = new Dictionary<int, Restaurant>();
+
+            var restaurants = await connection.QueryAsync<Restaurant, Review, Restaurant>(@"
+                SELECT r.Id, r.Name, rev.Id AS ReviewId, rev.Date, rev.Comment, rev.Rating
+                FROM Restaurants r
+                INNER JOIN Reviews rev on rev.RestaurantId = r.Id
+                ORDER BY r.Name",
+                map: (restaurant, review) =>
+                {
+                    if (!restaurantsDictionary.TryGetValue(restaurant.Id, out var restaurantEntry))
+                    {
+                        restaurantEntry = restaurant;
+                        restaurantEntry.Reviews = new List<Review>();
+                        restaurantsDictionary.Add(restaurantEntry.Id, restaurantEntry);
+                    }
+
+                    restaurantEntry.Reviews.Add(review);
+                    return restaurantEntry;
+
+                }, splitOn: "ReviewId"); // A comma-separated string that tells Dapper when the returned columns must be mapped to the next object.
+
+            PrintRestaurantsWithReviews(restaurantsDictionary.Values);    // OR restaurants.Distinct()
         }
 
         private static async Task AliasMappingAsync(string connectionString)
@@ -61,6 +91,21 @@ namespace SqlSat921
             foreach (var restaurant in restaurants)
             {
                 Console.WriteLine($"{restaurant.Name} in {restaurant.Address.Street}, {restaurant.Address.ZipCode}, {restaurant.Address.City}");
+            }
+        }
+
+        private static void PrintRestaurantsWithReviews(IEnumerable<Restaurant> restaurants)
+        {
+            foreach (var restaurant in restaurants)
+            {
+                Console.WriteLine($"Reviews for {restaurant.Name}:");
+
+                foreach (var review in restaurant.Reviews)
+                {
+                    Console.WriteLine($"{review.Date.ToShortDateString()}: {review.Comment} - {review.Rating}");
+                }
+
+                Console.WriteLine();
             }
         }
 
