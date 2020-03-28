@@ -8,7 +8,7 @@ namespace SqlSat921
 
         private static Task Main(string[] args)
         {
-            //return Parameters.RunSample(connectionString);
+            return Parameters.RunSampleAsync(connectionString);
 
             //return MultipleResultsets.RunSampleAsync(connectionString);
 
@@ -16,7 +16,9 @@ namespace SqlSat921
 
             //return CustomColumnMapping.RunSampleAsync(connectionString);
 
-            return CustomTypeHandling.RunSampleAsync(connectionString);
+            //return CustomTypeHandling.RunSampleAsync(connectionString);
+
+            //return Resiliency.RunSampleAsync(connectionString);
         }
     }
 }
