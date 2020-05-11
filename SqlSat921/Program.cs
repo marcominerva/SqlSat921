@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using SqlSat921.Samples;
+using System.Threading.Tasks;
 
 namespace SqlSat921
 {
@@ -8,9 +9,9 @@ namespace SqlSat921
 
         private static Task Main(string[] args)
         {
-            return Parameters.RunSampleAsync(connectionString);
+            //return Parameters.RunSampleAsync(connectionString);
 
-            //return MultipleResultsets.RunSampleAsync(connectionString);
+            return MultipleResultsets.RunSampleAsync(connectionString);
 
             //return MultipleMappings.RunSampleAsync(connectionString);
 

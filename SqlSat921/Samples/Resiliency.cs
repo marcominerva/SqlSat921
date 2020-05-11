@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SqlSat921
+namespace SqlSat921.Samples
 {
     public static class Resiliency
     {

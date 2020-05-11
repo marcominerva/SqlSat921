@@ -7,17 +7,17 @@ using System.Data;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace SqlSat921
+namespace SqlSat921.Samples
 {
     public static class CustomTypeHandling
     {
         public static async Task RunSampleAsync(string connectionString)
         {
-            await RoleMappingAsync(connectionString);
+            //await RoleMappingAsync(connectionString);
 
-            // await JsonMappingReadAsync(connectionString);
+            await JsonMappingReadAsync(connectionString);
 
-            // await JsonMappingWriteAsync(connectionString);
+            //await JsonMappingWriteAsync(connectionString);
         }
 
         private static async Task RoleMappingAsync(string connectionString)
@@ -73,7 +73,8 @@ namespace SqlSat921
                         },
                         new Tag
                         {
-                            Value = "#food" }
+                            Value = "#food"
+                        }
                     }
                 });
 
